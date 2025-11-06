@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AVERUS — Einkaufsberatung für Schweizer KMU</title>
+  <meta name="description" content="AVERUS hilft Schweizer KMU, smarter einzukaufen und bei Beschaffungen fundierte Entscheidungen zu treffen.">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#f8f5f0;--card:#e0e0d1;--accent:#7f9c86;--muted:#6b6b6b;--glass: rgba(255,255,255,0.2)}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Inter',sans-serif;color:#021029;background:var(--bg);-webkit-font-smoothing:antialiased}
+    .container{max-width:980px;margin:32px auto;padding:20px}
+    header{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:56px;height:56px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:700;color:white}
+    h1{font-size:1.6rem;margin:0}
+    p.lead{color:var(--muted);margin:4px 0 0}
+
+    .hero{display:grid;grid-template-columns:1fr;gap:18px;background:var(--glass);padding:20px;border-radius:12px;margin-top:18px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{padding:10px 14px;border-radius:10px;border:0;cursor:pointer;font-weight:600}
+    .btn-primary{background:var(--accent);color:white}
+    .btn-ghost{background:transparent;border:1px solid rgba(0,0,0,0.1);color:var(--muted)}
+
+    .grid{display:grid;grid-template-columns:1fr;gap:18px;margin-top:18px}
+    @media(min-width:840px){.hero{grid-template-columns:1fr 360px}.grid{grid-template-columns:1fr 360px}}
+
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));padding:18px;border-radius:12px}
+    .services li{margin-bottom:10px}
+    .muted{color:var(--muted);font-size:0.95rem}
+
+    form{display:flex;flex-direction:column;gap:10px}
+    input,textarea,select{padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.1);background:white;color:inherit;min-width:0}
+    textarea{min-height:120px;resize:vertical}
+    .small{font-size:0.9rem;color:var(--muted)}
+    .success{background:linear-gradient(90deg,#d1eadf,#b8d9c3);padding:12px;border-radius:8px;color:#0b3b2f}
+    footer{margin-top:28px;color:var(--muted);text-align:center;font-size:0.9rem}
+
+    input:focus,textarea:focus,select:focus{outline:3px solid rgba(127,156,134,0.3);outline-offset:2px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <h1>AVERUS</h1>
+          <p class="lead">Smarter einkaufen für Schweizer KMU – ehrliche und fundierte Beratung</p>
+        </div>
+      </div>
+      <nav aria-label="Hauptnavigation">
+        <button class="btn btn-ghost" onclick="scrollToSection('about')">Über uns</button>
+        <button class="btn btn-primary" onclick="scrollToSection('contact')">Anliegen senden</button>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div>
+        <h2 style="margin-top:0">Ihre Beschaffungen – transparent und professionell begleitet</h2>
+        <p class="muted">Sie schildern uns, was Sie benötigen. Wir prüfen Angebote, vergleichen Optionen und geben Ihnen ehrliche Empfehlungen, damit Sie fundierte Entscheidungen treffen können.</p>
+
+        <ul class="services muted" id="services" style="margin-top:12px">
+          <li>💻 Beispiel: Verschiedene Anbieter für Bildschirme geprüft, die beste Lösung gefunden – fair und kosteneffizient.</li>
+          <li>🪑 Beispiel: Büroeinrichtung oder Inventar überprüft und optimale Angebote ermittelt.</li>
+          <li>📦 Beispiel: Neue Produkte gesucht? Wir unterstützen Sie, das beste Preis-Leistungs-Verhältnis zu erhalten.</li>
+        </ul>
+
+        <div class="cta" style="margin-top:14px">
+          <button class="btn btn-primary" onclick="scrollToSection('contact')">Jetzt Anliegen absenden</button>
+        </div>
+      </div>
+
+      <aside class="card" id="contact">
+        <h3 style="margin-top:0">Gratis Erstgespräch</h3>
+        <p class="small">Schildern Sie uns Ihr Anliegen – wir melden uns innerhalb von 48 Stunden für eine ehrliche, unverbindliche Beratung.</p>
+
+        <form id="contactForm" method="POST" action="https://formspree.io/f/FORM_ENDPOINT">
+          <input type="text" name="company" placeholder="Firmenname*" required>
+          <input type="text" name="name" placeholder="Ansprechpartner*" required>
+          <input type="email" name="email" placeholder="E-Mail*" required>
+          <input type="tel" name="phone" placeholder="Telefon (optional)">
+          <textarea name="message" placeholder="Kurz Ihr Anliegen beschreiben*" required></textarea>
+
+          <div style="display:flex;gap:8px;align-items:center;justify-content:flex-start">
+            <button type="submit" class="btn btn-primary">Absenden</button>
+            <button type="button" class="btn btn-ghost" onclick="resetForm()">Zurücksetzen</button>
+          </div>
+
+          <p id="formMsg" class="small" style="margin:0"></p>
+        </form>
+
+        <script>
+          const form = document.getElementById('contactForm');
+          const msg = document.getElementById('formMsg');
+          form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            msg.textContent = 'Sende...';
+            const data = new FormData(form);
+            try {
+              const resp = await fetch(form.action, {method:'POST',body:data,headers:{'Accept':'application/json'}});
+              if(resp.ok){form.reset();msg.innerHTML='<span class="success">Danke! Ihre Anfrage wurde gesendet. Wir melden uns innerhalb von 48 Stunden.</span>'}
+              else{const json=await resp.json();msg.textContent=json.error||'Beim Senden ist ein Fehler aufgetreten.'}
+            }catch(err){msg.textContent='Netzwerkfehler — bitte prüfen Sie Ihre Verbindung.'}
+          });
+          function resetForm(){document.getElementById('formMsg').textContent='';form.reset();}
+        </script>
+      </aside>
+    </section>
+
+    <div class="grid">
+      <div class="card" id="about">
+        <h3>Unsere Mission</h3>
+        <p class="muted">AVERUS unterstützt Schweizer KMU dabei, ihre Beschaffungen fundiert und transparent zu gestalten. Wir vergleichen Angebote, prüfen Optionen und geben ehrliche Empfehlungen – damit Sie die besten Entscheidungen treffen können.</p>
+
+        <h4 style="margin-top:14px">Warum AVERUS?</h4>
+        <ul class="muted">
+          <li>Persönliche Beratung: wir hören Ihnen zu und verstehen Ihre Situation.</li>
+          <li>Praxisnah: fundierte Vorschläge, die Ihnen echte Entscheidungshilfe bieten.</li>
+          <li>Schweizer KMU-Fokus: wir kennen den Markt, Preise und Anbieter.</li>
+          <li>Transparenz: keine Pakete, nur maßgeschneiderte Empfehlungen für Ihr Anliegen.</li>
+        </ul>
+      </div>
+    </div>
+
+    <footer>
+      © <span id="year"></span> AVERUS — Einkaufsberatung für Schweizer KMU • <span class="muted">Datenschutz & Impressum folgen</span>
+    </footer>
+  </div>
+
+  <script>
+    document.getElementById('year').textContent=new Date().getFullYear();
+    function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'start'});}
+  </script>
+</body>
+</html>
